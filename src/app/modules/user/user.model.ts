@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
-import { TUser } from './user.interface';
+import { TUser, UserModel } from './user.interface';
 import config from '../../config';
 
-const userSchema = new Schema<TUser>({
+const userSchema = new Schema<TUser, UserModel>({
   userId: { type: Number, required: true, unique: true },
   username: {
     type: String,
@@ -52,4 +52,17 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-export const User = model<TUser>('User', userSchema);
+userSchema.statics.isUserExist = async function (userId: number) {
+  const user = await User.findOne(
+    { userId },
+    {
+      _id: 0,
+      __v: 0,
+      password: 0,
+      orders: 0,
+    },
+  );
+  return user;
+};
+
+export const User = model<TUser, UserModel>('User', userSchema);
