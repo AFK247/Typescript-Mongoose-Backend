@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { UserServices } from './user.service';
 import userValidationSchema from './user.validation';
 
+//Create new user
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body;
@@ -26,6 +27,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+//get all user
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const result = await UserServices.getAllUsersDB();
@@ -44,6 +46,7 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+//get single user
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
