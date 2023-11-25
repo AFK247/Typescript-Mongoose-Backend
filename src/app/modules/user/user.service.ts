@@ -130,6 +130,27 @@ const getSingleUserOrdersDB = async (userId: number) => {
   }
 };
 
+const getSingleUserTotalPriceDB = async (userId: number) => {
+  const user = await User.isUserExist(userId);
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const result = await User.aggregate([
+    { $match: { userId } },
+    { $project: { orders: 1 } },
+  ]);
+
+  console.log(result);
+
+  // if (result) {
+  //   if (result.orders && result.orders.length === 0) {
+  //     return 'No orders';
+  //   } else return { orders: result.orders };
+  // }
+};
+
 export const UserServices = {
   createUserDB,
   getAllUsersDB,
@@ -138,4 +159,5 @@ export const UserServices = {
   deleteSingleUserDB,
   addProductDB,
   getSingleUserOrdersDB,
+  getSingleUserTotalPriceDB,
 };
