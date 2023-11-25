@@ -18,6 +18,7 @@ export type TUser = {
     country: string;
   };
   orders?: Array<{
+    //this field is optional
     productName: string;
     price: number;
     quantity: number;

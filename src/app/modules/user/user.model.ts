@@ -52,6 +52,7 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+//Static for checking the existence of user
 userSchema.statics.isUserExist = async function (userId: number) {
   const user = await User.findOne(
     { userId },
