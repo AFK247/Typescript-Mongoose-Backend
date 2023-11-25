@@ -143,13 +143,9 @@ const getSingleUserTotalPriceDB = async (userId: number) => {
     { $group: { _id: null, total: { $sum: '$orders.price' } } },
   ]);
 
-  console.log(result);
-
-  // if (result) {
-  //   if (result.orders && result.orders.length === 0) {
-  //     return 'No orders';
-  //   } else return { orders: result.orders };
-  // }
+  if (result.length) {
+    return { totalPrice: result[0].total };
+  } else return 'No orders Found';
 };
 
 export const UserServices = {
