@@ -139,7 +139,8 @@ const getSingleUserTotalPriceDB = async (userId: number) => {
 
   const result = await User.aggregate([
     { $match: { userId } },
-    { $project: { orders: 1 } },
+    { $unwind: '$orders' },
+    { $group: { _id: null, total: { $sum: '$orders.price' } } },
   ]);
 
   console.log(result);
