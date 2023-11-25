@@ -81,10 +81,61 @@ const deleteSingleUserDB = async (userId: number) => {
   return result;
 };
 
+const addProductDB = async (
+  userId: number,
+  data: {
+    productName: string;
+    price: number;
+    quantity: number;
+  },
+) => {
+  const user = await User.isUserExist(userId);
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const res = await User.updateOne(
+    { userId },
+    {
+      $addToSet: {
+        orders: data,
+      },
+    },
+    {
+      upsert: true,
+    },
+  );
+  if (res.acknowledged) return null;
+};
+
+const getSingleUserOrdersDB = async (userId: number) => {
+  const user = await User.isUserExist(userId);
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const result = await User.findOne(
+    { userId },
+    {
+      orders: 1,
+    },
+  );
+
+  if (result) {
+    if (result.orders && result.orders.length === 0) {
+      return 'No orders';
+    } else return { orders: result.orders };
+  }
+};
+
 export const UserServices = {
   createUserDB,
   getAllUsersDB,
   getSingleUserDB,
   updateSingleUserDB,
   deleteSingleUserDB,
+  addProductDB,
+  getSingleUserOrdersDB,
 };

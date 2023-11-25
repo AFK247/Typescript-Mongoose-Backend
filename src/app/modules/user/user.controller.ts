@@ -114,10 +114,59 @@ const deleteSingleUser = async (req: Request, res: Response) => {
   }
 };
 
+const addProduct = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const data = req.body;
+
+    const result = await UserServices.addProductDB(Number(userId), data);
+
+    res.status(200).json({
+      success: true,
+      message: 'Order created successfully!',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      message: err.message || 'Something went wrong',
+      error: {
+        code: 404,
+        description: err.message + '!',
+      },
+    });
+  }
+};
+
+const getSingleUserOrders = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const result = await UserServices.getSingleUserOrdersDB(Number(userId));
+
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      message: err.message || 'Something went wrong',
+      error: {
+        code: 404,
+        description: err.message + '!',
+      },
+    });
+  }
+};
+
 export const UserController = {
   createUser,
   getAllUsers,
   getSingleUser,
   updateSingleUser,
   deleteSingleUser,
+  addProduct,
+  getSingleUserOrders,
 };

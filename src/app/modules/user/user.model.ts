@@ -35,9 +35,9 @@ const userSchema = new Schema<TUser, UserModel>({
   orders: {
     type: [
       {
-        productName: { type: String },
-        price: { type: Number },
-        quantity: { type: Number },
+        productName: { type: String, required: true },
+        price: { type: Number, required: true },
+        quantity: { type: Number, required: true },
       },
     ],
   },
